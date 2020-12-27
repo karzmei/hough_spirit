@@ -16,8 +16,9 @@ SMALL = np.array([[0,0,0,0,0], \
 				 [0,0,0,0,0]])
 
 
-def gradient_size_per_point(pix):
-	""" Computes size of the gradient at every pixel, except last row and last column."""
+def naive_gradient_size_per_point(pix):
+	""" Computes size of the gradient at every pixel, except last row and last column.
+	The gradient is computed using differences with +1 pixels in rows and cols directions."""
 	grad_sz = np.zeros_like(pix, dtype = float)
 
 	d_rows = - pix[:-1, :-1] + pix[1:,  :-1]
@@ -31,6 +32,14 @@ def rescale_arr(arr, end = GRAY):
 	arr = np.round( (arr - np.min(arr)) * (end -1) / (np.max(arr) - np.min(arr)) )
 	return arr
 
+def bw_by_threshold(arr, threshold, low_val = 0, high_val = GRAY - 1):
+	""" Sets low-values elements of arr to be low_val (deault = 0), 
+	and high-valued to be val, the default being the highest gray-scale "color"."""
+	low_idx = arr < threshold
+	high_idx = arr >= threshold
+	arr[low_idx] = low_val
+	arr[high_idx] = high_val
+	return arr
 
 def gradients_map():
 	pass
@@ -38,9 +47,6 @@ def gradients_map():
 def produce_heat_map():
 	pass
 
-def detect_changes():
-	# points in the image where there's a change in color
-	pass
 
 if __name__ == '__main__':
 	# load image:
